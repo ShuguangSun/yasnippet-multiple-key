@@ -9,15 +9,4 @@ I always forget the exact key for snippet and I use it together with ivy-yasnipp
 
 # ISSUE
 
-It may make some functions of yasnippet fail:
-
-```
-7 unexpected results:
-   FAILED  snippet-lookup
-   FAILED  snippet-save
-   FAILED  test-group-menus
-   FAILED  test-group-menus-twisted
-   FAILED  test-yas-define-menu
-   FAILED  visiting-compiled-snippets
-   FAILED  yas-lookup-snippet-with-env
-```
+Not test for snippet save and menus, etc..
