@@ -1,4 +1,4 @@
-;;; yasnippet-multiple-key.el --- multiple key yasnippet  -*- lexical-binding: t; -*-
+;;; yasnippet-multiple-key.el --- Multiple key yasnippet  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2020  Shuguang Sun
 
@@ -6,7 +6,7 @@
 ;; Created: 2020/09/02
 ;; Version: 1.0
 ;; URL: https://github.com/ShuguangSun/yasnippet-multiple-key
-;; Package-Requires: ((yasnippet "0.14.0"))
+;; Package-Requires: ((emacs "24.3") (yasnippet "0.14.0"))
 ;; Keywords: convenience, emulation
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -53,9 +53,11 @@
   :group 'editing)
 
 
-;; It modified yas--parse-template from yasnippet
+;; It modifies yas--parse-template from yasnippet
 (defun yasmk--parse-template-for-compile (&optional file)
   "Parse the template in the current buffer.
+
+This is fork of `yas--parse-template' in yasnippet, and patched for mutlple key.
 
 Optional FILE is the absolute file name of the file being
 parsed.
@@ -126,8 +128,7 @@ Here's a list of currently recognized directives:
       (setq template
             (buffer-substring-no-properties (point-min) (point-max))))
     (unless (or key binding)
-      (cl-pushnew (and file (file-name-nondirectory file)) key)
-      )
+      (cl-pushnew (and file (file-name-nondirectory file)) key))
     (when (eq type 'command)
       (setq template (yas--read-lisp (concat "(progn" template ")"))))
     (when group
@@ -137,14 +138,14 @@ Here's a list of currently recognized directives:
           ;; (push (list k template name condition group expand-env file binding uuid) results))
           (push (list k template (format "%s (%s)" name k) condition group expand-env file binding uuid) results))
       (setq results (list (list key template name condition group expand-env file binding uuid))))
-    ;;(print results)
-    results
-    ))
+    results))
 
 
-;; It modified yas-define-snippets from yasnippet
+;; It modifies yas-define-snippets from yasnippet
 (defun yasmk-define-snippets-for-compile (mode snippets)
   "Define SNIPPETS for MODE.
+
+This is fork of yas-define-snippets in yasnippet, and patched for mutlple key.
 
 SNIPPETS is a list of snippet definitions, each taking the
 following form
@@ -192,7 +193,7 @@ the current buffers contents."
                                                snippet-table)))
       template)))
 
-;; It modified yas--load-directory-2 from yasnippet
+;; It modifies yas--load-directory-2 from yasnippet
 (defun yasmk--load-directory-2-for-compile (directory mode-sym)
   ;; Load .yas-setup.el files wherever we find them
   ;;
@@ -215,8 +216,7 @@ the current buffers contents."
           (if (listp (car parsed)) ;; If car is a list
               (dolist (sp parsed)
                 (push sp snippet-defs))
-            (push parsed snippet-defs)
-            ))))
+            (push parsed snippet-defs)))))
     (when snippet-defs
       (yasmk-define-snippets-for-compile mode-sym
                            snippet-defs))
@@ -227,9 +227,11 @@ the current buffers contents."
                             mode-sym))))
 
 
-;; It modified yas--load-directory-1 from yasnippet
+;; It modifies yas--load-directory-1 from yasnippet
 (defun yasmk--load-directory-1-for-compile (directory mode-sym)
-  "Recursively load snippet templates from DIRECTORY."
+  "Recursively load snippet templates from DIRECTORY.
+
+This is fork of yas--load-directory-1 in yasnippet, and patched for mutlple key."
   (if yas--creating-compiled-snippets
       (let ((output-file (expand-file-name ".yas-compiled-snippets.el"
                                            directory)))
@@ -247,9 +249,11 @@ the current buffers contents."
         (yas--load-directory-2 directory mode-sym)))))
 
 
-;; It modified yas-load-directory from yasnippet
+;; It modifies yas-load-directory from yasnippet
 (defun yasmk-load-directory-for-compile (top-level-dir &optional use-jit interactive)
   "Load snippets in directory hierarchy TOP-LEVEL-DIR.
+
+This is fork of yas-load-directory in yasnippet, and patched for mutlple key.
 
 Below TOP-LEVEL-DIR each directory should be a mode name.
 
@@ -303,6 +307,8 @@ With prefix argument USE-JIT do jit-loading of snippets."
 ;;;###autoload
 (defun yasmk-compile-directory (top-level-dir)
   "Create .yas-compiled-snippets.el files under subdirs of TOP-LEVEL-DIR.
+
+This is fork of `yas-compile-directory' in yasnippet, and patched for mutlple key.
 
 This works by stubbing a few functions, then calling
 `yas-load-directory'."
