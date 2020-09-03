@@ -316,6 +316,11 @@ This works by stubbing a few functions, then calling
   (let ((yas--creating-compiled-snippets t))
     (yasmk-load-directory-for-compile top-level-dir nil)))
 
+;;;###autoload
+(defun yasmk-recompile-all ()
+  "Compile every dir in `yas-snippet-dirs'."
+  (interactive)
+  (mapc #'yasmk-compile-directory (yas-snippet-dirs)))
 
 
 (provide 'yasnippet-multiple-key)
