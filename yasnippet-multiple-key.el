@@ -26,12 +26,12 @@
 
 ;; Parse multiple "# key :" for yasnippet
 
-;; This package heavely uses the code in
+;; This package heavily uses the code in
 ;; [yasnippet](https://github.com/joaotavora/yasnippet), and includes some
 ;; patches to that.
 
 ;; The implementation is simple: loop the `#key:` keywords in the head of
-;; snippet, and parse the snippet to several records whith different keys in the
+;; snippet, and parse the snippet to several records with different keys in the
 ;; yas table.
 
 ;; (add-to-list 'load-path
@@ -41,6 +41,9 @@
 ;; In your snippet directory
 ;; M-x yasmk-compile-directory
 ;; M-x yas-reload-all
+
+;; Once those functions are implemented in yasnippet, this package can be
+;; retired.
 
 ;;; Code:
 
@@ -57,7 +60,7 @@
 (defun yasmk--parse-template-for-compile (&optional file)
   "Parse the template in the current buffer.
 
-This is fork of `yas--parse-template' in yasnippet, and patched for mutlple key.
+This is fork of `yas--parse-template' in yasnippet, and patched for multiple key.
 
 Optional FILE is the absolute file name of the file being
 parsed.
