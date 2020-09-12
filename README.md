@@ -18,6 +18,27 @@ For example, the template below will be parsed as two snippets with key of choos
 
 I always forget the exact key for snippet and I use it together with ivy-yasnippet. It may not improve the coding speed but it makes the life easy.
 
+# USAGE
+
+```
+(add-to-list 'load-path
+                "~/path-to-yasnippet-multiple-key")
+(require 'yasnippet-multiple-key)
+```
+
+In your snippet directory
+```
+M-x yasmk-compile-directory
+M-x yas-reload-all
+```
+
+or 
+```
+M-x yasmk-recompile-directory
+M-x yas-reload-all
+```
+
+
 # ISSUES
 
 Not test for snippet save and menus, etc..

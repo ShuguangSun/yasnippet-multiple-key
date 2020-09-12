@@ -42,6 +42,9 @@
 ;; M-x yasmk-compile-directory
 ;; M-x yas-reload-all
 
+;; M-x yasmk-recompile-directory
+;; M-x yas-reload-all
+
 ;; Once those functions are implemented in yasnippet, this package can be
 ;; retired.
 
