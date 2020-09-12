@@ -6,7 +6,7 @@
 ;; Created: 2020/09/02
 ;; Version: 1.0
 ;; URL: https://github.com/ShuguangSun/yasnippet-multiple-key
-;; Package-Requires: ((emacs "24.3") (yasnippet "0.14.0"))
+;; Package-Requires: ((emacs "26.1") (yasnippet "0.14.0"))
 ;; Keywords: convenience, emulation
 
 ;; This program is free software; you can redistribute it and/or modify
