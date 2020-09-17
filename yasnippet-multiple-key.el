@@ -63,7 +63,8 @@
 (defun yasmk--parse-template-for-compile (&optional file)
   "Parse the template in the current buffer.
 
-This is fork of `yas--parse-template' in yasnippet, and patched for multiple key.
+This is fork of `yas--parse-template' in yasnippet,
+and patched for multiple key.
 
 Optional FILE is the absolute file name of the file being
 parsed.
@@ -151,7 +152,8 @@ Here's a list of currently recognized directives:
 (defun yasmk-define-snippets-for-compile (mode snippets)
   "Define SNIPPETS for MODE.
 
-This is fork of yas-define-snippets in yasnippet, and patched for mutlple key.
+This is fork of yas-define-snippets in yasnippet,
+and patched for mutlple key.
 
 SNIPPETS is a list of snippet definitions, each taking the
 following form
@@ -201,8 +203,6 @@ the current buffers contents."
 
 ;; It modifies yas--load-directory-2 from yasnippet
 (defun yasmk--load-directory-2-for-compile (directory mode-sym)
-  ;; Load .yas-setup.el files wherever we find them
-  ;;
   (yas--load-yas-setup-file (expand-file-name ".yas-setup" directory))
   (let* ((default-directory directory)
          (snippet-defs nil)
@@ -314,7 +314,8 @@ With prefix argument USE-JIT do jit-loading of snippets."
 (defun yasmk-compile-directory (top-level-dir)
   "Create .yas-compiled-snippets.el files under subdirs of TOP-LEVEL-DIR.
 
-This is fork of `yas-compile-directory' in yasnippet, and patched for mutlple key.
+This is fork of `yas-compile-directory' in yasnippet,
+and patched for mutlple key.
 
 This works by stubbing a few functions, then calling
 `yas-load-directory'."
