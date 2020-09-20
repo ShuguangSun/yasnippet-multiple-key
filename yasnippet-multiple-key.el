@@ -39,11 +39,15 @@
 ;; (require 'yasnippet-multiple-key)
 
 ;; In your snippet directory
-;; M-x yasmk-compile-directory
+;; M-x yasnippet-multiple-key-compile-directory
 ;; M-x yas-reload-all
 
-;; M-x yasmk-recompile-directory
+;; M-x yasnippet-multiple-key-recompile-directory
 ;; M-x yas-reload-all
+
+;; You can define alias or key-bindings
+;; (defalias 'yasmk-compile-directory #'yasnippet-multiple-key-compile-directory)
+;; (defalias 'yasmk-recompile-all #'yasnippet-multiple-key-recompile-all)
 
 ;; Once those functions are implemented in yasnippet, this package can be
 ;; retired.
@@ -55,12 +59,12 @@
 
 (defgroup yasnippet-multiple-key nil
   "Parse multiple keys for yasnippet"
-  :prefix "yasmk-"
+  :prefix "yasnippet-multiple-key-"
   :group 'editing)
 
 
 ;; It modifies yas--parse-template from yasnippet
-(defun yasmk--parse-template-for-compile (&optional file)
+(defun yasnippet-multiple-key--parse-template-for-compile (&optional file)
   "Parse the template in the current buffer.
 
 This is fork of `yas--parse-template' in yasnippet,
@@ -149,7 +153,7 @@ Here's a list of currently recognized directives:
 
 
 ;; It modifies yas-define-snippets from yasnippet
-(defun yasmk-define-snippets-for-compile (mode snippets)
+(defun yasnippet-multiple-key-define-snippets-for-compile (mode snippets)
   "Define SNIPPETS for MODE.
 
 This is fork of yas-define-snippets in yasnippet,
@@ -202,7 +206,7 @@ the current buffers contents."
       template)))
 
 ;; It modifies yas--load-directory-2 from yasnippet
-(defun yasmk--load-directory-2-for-compile (directory mode-sym)
+(defun yasnippet-multiple-key--load-directory-2-for-compile (directory mode-sym)
   (yas--load-yas-setup-file (expand-file-name ".yas-setup" directory))
   (let* ((default-directory directory)
          (snippet-defs nil)
@@ -218,23 +222,23 @@ the current buffers contents."
           (insert-file-contents file)
           ;; (append (yas--parse-template-for-compile file)
           ;;         snippet-defs)
-          (setq parsed (yasmk--parse-template-for-compile file))
+          (setq parsed (yasnippet-multiple-key--parse-template-for-compile file))
           (if (listp (car parsed)) ;; If car is a list
               (dolist (sp parsed)
                 (push sp snippet-defs))
             (push parsed snippet-defs)))))
     (when snippet-defs
-      (yasmk-define-snippets-for-compile mode-sym
+      (yasnippet-multiple-key-define-snippets-for-compile mode-sym
                            snippet-defs))
     ;; now recurse to a lower level
     ;;
     (dolist (subdir (yas--subdirs directory))
-      (yasmk--load-directory-2-for-compile subdir
+      (yasnippet-multiple-key--load-directory-2-for-compile subdir
                             mode-sym))))
 
 
 ;; It modifies yas--load-directory-1 from yasnippet
-(defun yasmk--load-directory-1-for-compile (directory mode-sym)
+(defun yasnippet-multiple-key--load-directory-1-for-compile (directory mode-sym)
   "Recursively load snippet templates from DIRECTORY.
 
 This is fork of yas--load-directory-1 in yasnippet, and patched for mutlple key."
@@ -244,7 +248,7 @@ This is fork of yas--load-directory-1 in yasnippet, and patched for mutlple key.
         (with-temp-file output-file
           (insert (format ";;; Compiled snippets and support files for `%s'\n"
                           mode-sym))
-          (yasmk--load-directory-2-for-compile directory mode-sym)
+          (yasnippet-multiple-key--load-directory-2-for-compile directory mode-sym)
           (insert (format ";;; Do not edit! File generated at %s\n"
                           (current-time-string)))))
     ;; Normal case.
@@ -256,7 +260,7 @@ This is fork of yas--load-directory-1 in yasnippet, and patched for mutlple key.
 
 
 ;; It modifies yas-load-directory from yasnippet
-(defun yasmk-load-directory-for-compile (top-level-dir &optional use-jit interactive)
+(defun yasnippet-multiple-key-load-directory-for-compile (top-level-dir &optional use-jit interactive)
   "Load snippets in directory hierarchy TOP-LEVEL-DIR.
 
 This is fork of yas-load-directory in yasnippet, and patched for mutlple key.
@@ -288,7 +292,7 @@ With prefix argument USE-JIT do jit-loading of snippets."
         ;;
         (yas--define-parents mode-sym parents)
         (yas--menu-keymap-get-create mode-sym)
-        (let ((fun (apply-partially #'yasmk--load-directory-1-for-compile dir mode-sym)))
+        (let ((fun (apply-partially #'yasnippet-multiple-key--load-directory-1-for-compile dir mode-sym)))
           (if use-jit
               (yas--schedule-jit mode-sym fun)
             (funcall fun)))
@@ -311,7 +315,7 @@ With prefix argument USE-JIT do jit-loading of snippets."
 
 
 ;;;###autoload
-(defun yasmk-compile-directory (top-level-dir)
+(defun yasnippet-multiple-key-compile-directory (top-level-dir)
   "Create .yas-compiled-snippets.el files under subdirs of TOP-LEVEL-DIR.
 
 This is fork of `yas-compile-directory' in yasnippet,
@@ -321,14 +325,13 @@ This works by stubbing a few functions, then calling
 `yas-load-directory'."
   (interactive "DTop level snippet directory?")
   (let ((yas--creating-compiled-snippets t))
-    (yasmk-load-directory-for-compile top-level-dir nil)))
+    (yasnippet-multiple-key-load-directory-for-compile top-level-dir nil)))
 
 ;;;###autoload
-(defun yasmk-recompile-all ()
+(defun yasnippet-multiple-key-recompile-all ()
   "Compile every dir in `yas-snippet-dirs'."
   (interactive)
-  (mapc #'yasmk-compile-directory (yas-snippet-dirs)))
-
+  (mapc #'yasnippet-multiple-key-compile-directory (yas-snippet-dirs)))
 
 (provide 'yasnippet-multiple-key)
 ;;; yasnippet-multiple-key.el ends here

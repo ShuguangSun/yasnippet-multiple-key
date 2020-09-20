@@ -28,16 +28,21 @@ I always forget the exact key for snippet and I use it together with ivy-yasnipp
 
 In your snippet directory
 ```
-M-x yasmk-compile-directory
+M-x yasnippet-multiple-key-compile-directory
 M-x yas-reload-all
 ```
 
 or 
 ```
-M-x yasmk-recompile-directory
+M-x yasnippet-multiple-key-recompile-directory
 M-x yas-reload-all
 ```
 
+You can define alias or key-bindings
+```
+(defalias 'yasmk-compile-directory #'yasnippet-multiple-key-compile-directory)
+(defalias 'yasmk-recompile-all #'yasnippet-multiple-key-recompile-all)
+```
 
 # ISSUES
 
